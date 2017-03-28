@@ -15,6 +15,9 @@ import android.view.MenuItem;
 
 import com.androidbelieve.drawerwithswipetabs.navigationbar.account;
 
+import static com.androidbelieve.drawerwithswipetabs.Login.EMAIL_SHARED_PREF;
+import static com.androidbelieve.drawerwithswipetabs.Login.ID_USER;
+import static com.androidbelieve.drawerwithswipetabs.Login.KEY_PASSWORD;
 import static com.androidbelieve.drawerwithswipetabs.Login.SHARED_PREF_NAME;
 
 public class MainActivity extends AppCompatActivity {
