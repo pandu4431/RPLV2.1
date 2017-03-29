@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/materi"
+            android:icon="@drawable/homeicons"
+            android:title="Home" />
+        <item
+            android:id="@+id/account"
+            android:icon="@drawable/accounticons"
+            android:title="Account" />
+        <item
+            android:id="@+id/category"
+            android:icon="@drawable/categoryicons"
+            android:title="Categories" />
+        <item
+            android:id="@+id/favorite"
+            android:icon="@drawable/favoriteicons"
+            android:title="Favorite" />
+    </group>
+    <group
+        android:id="@+id/menu_bottom"
+        android:checkableBehavior="none">
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="Setting" />
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/logouticons"
+            android:title="Log-Out" />
+    </group>
+</menu>
