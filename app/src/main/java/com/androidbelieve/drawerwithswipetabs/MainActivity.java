@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
          * Lets inflate the very first fragment
          * Here , we are inflating the TabFragment as the first Fragment
          */
-
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mFragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
@@ -59,12 +58,12 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawers();
 
                 if (menuItem.getItemId() == R.id.materi) {
-                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                    FragmentTransaction fragmentTransaction = mFragmentTransaction;
                     fragmentTransaction.replace(R.id.containerView, new TabFragment()).commit();
                 }
 
                 if (menuItem.getItemId() == R.id.account) {
-                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    FragmentTransaction xfragmentTransaction = mFragmentTransaction;
                     xfragmentTransaction.replace(R.id.containerView, new account()).commit();
                 }
 
