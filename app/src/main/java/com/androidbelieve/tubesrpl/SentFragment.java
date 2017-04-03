@@ -1,4 +1,4 @@
-package com.androidbelieve.drawerwithswipetabs;
+package com.androidbelieve.tubesrpl;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,11 @@ import android.view.ViewGroup;
 /**
  * Created by Ratan on 7/29/2015.
  */
-public class TabPengumuman extends Fragment {
+public class SentFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.tab_pengumuman,null);
+        return inflater.inflate(R.layout.sent_layout, null);
     }
-
-
 }

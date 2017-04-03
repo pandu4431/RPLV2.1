@@ -1,7 +1,5 @@
-package com.androidbelieve.drawerwithswipetabs;
+package com.androidbelieve.tubesrpl;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,7 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.androidbelieve.drawerwithswipetabs.navigationbar.UserData;
+import com.androidbelieve.tubesrpl.setter_getter.UserData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +35,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,6 +51,7 @@ public class Login extends AppCompatActivity {
     public static String SHARED_PREF_NAME;
     public static String EMAIL_SHARED_PREF;
     public static String ID_USER;
+    public static String USER_TYPE = "null";
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView signUp;
@@ -112,9 +109,6 @@ public class Login extends AppCompatActivity {
                             editor.putString(EMAIL_SHARED_PREF, email);
                             bt.execute();
                             editor.commit();
-                            //userPrev.setText(editTextEmail.toString());
-                            //Intent intent = new Intent(Login.this, MainActivity.class);
-                            //startActivity(intent);
                         } else {
                             Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_LONG).show();
                         }
@@ -171,7 +165,7 @@ public class Login extends AppCompatActivity {
 
     class BackgroundTask extends AsyncTask<Void, UserData, Void> {
         String username = editTextEmail.getText().toString();
-        String URLdata = "http://pandumalik.esy.es/UserRegistration/getUser.php?username="+username;
+        String URLdata = "http://pandumalik.esy.es/UserRegistration/getUser.php?username=" + username;
 
         @Override
         protected void onPreExecute() {
@@ -207,12 +201,13 @@ public class Login extends AppCompatActivity {
                 while (count < jsonArray.length()) {
                     JSONObject JO = jsonArray.getJSONObject(count);
                     count++;
-                    UserData UD = new UserData(JO.getString("nim"), JO.getString("name"), JO.getString("email"), JO.getString("password"));
+                    UserData UD = new UserData(JO.getString("nim"), JO.getString("name"), JO.getString("email"), JO.getString("password"), JO.getString("type"));
                     publishProgress(UD);
                     ID_USER = JO.getString("nim");
                     EMAIL_SHARED_PREF = JO.getString("email");
                     SHARED_PREF_NAME = JO.getString("name");
                     KEY_PASSWORD = JO.getString("password");
+                    USER_TYPE = JO.getString("type");
                 }
                 finish();
                 Log.d("JSON STRING", json_string);

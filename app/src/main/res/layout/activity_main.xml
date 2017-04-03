@@ -19,7 +19,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <FrameLayout
             android:id="@+id/containerView"
             android:layout_width="match_parent"
@@ -36,7 +35,5 @@
             app:itemTextColor="@color/black"
             app:menu="@menu/activity_main_drawer" />
 
-
     </android.support.v4.widget.DrawerLayout>
-
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.androidbelieve.drawerwithswipetabs;
+package com.androidbelieve.tubesrpl.setter_getter;
 
 /**
  * Created by pandu on 25/03/17.

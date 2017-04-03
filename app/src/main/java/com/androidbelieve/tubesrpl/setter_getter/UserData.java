@@ -1,4 +1,4 @@
-package com.androidbelieve.drawerwithswipetabs.navigationbar;
+package com.androidbelieve.tubesrpl.setter_getter;
 
 /**
  * Created by galan on 28/03/2017.
@@ -9,12 +9,22 @@ public class UserData {
     private String name;
     private String email;
     private String password;
+    private String type;
 
-    public UserData(String nim, String name, String email, String password){
-        this.nim=nim;
-        this.name=name;
-        this.email=email;
-        this.password=password;
+    public UserData(String nim, String name, String email, String password, String type) {
+        this.nim = nim;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getNim() {

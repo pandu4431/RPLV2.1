@@ -1,4 +1,4 @@
-package com.androidbelieve.drawerwithswipetabs.navigationbar;
+package com.androidbelieve.tubesrpl.navigationbar;
 
 /**
  * Created by pandu on 25/03/17.
@@ -14,29 +14,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-import com.androidbelieve.drawerwithswipetabs.R;
+
+import com.androidbelieve.tubesrpl.R;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.androidbelieve.drawerwithswipetabs.Login.EMAIL_SHARED_PREF;
-import static com.androidbelieve.drawerwithswipetabs.Login.ID_USER;
-import static com.androidbelieve.drawerwithswipetabs.Login.KEY_PASSWORD;
-import static com.androidbelieve.drawerwithswipetabs.Login.SHARED_PREF_NAME;
+import static com.androidbelieve.tubesrpl.Login.EMAIL_SHARED_PREF;
+import static com.androidbelieve.tubesrpl.Login.ID_USER;
+import static com.androidbelieve.tubesrpl.Login.KEY_PASSWORD;
+import static com.androidbelieve.tubesrpl.Login.SHARED_PREF_NAME;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class account extends Fragment {
 
+    private static final String REGISTER_URL = "http://pandumalik.esy.es/UserRegistration/update.php";
     private EditText mName;
     private EditText mEmail;
     private EditText mPass;
     private Button mUpdate;
-    private static final String REGISTER_URL = "http://pandumalik.esy.es/UserRegistration/update.php";
 
     public account() {
         // Required empty public constructor

@@ -1,10 +1,12 @@
-package com.androidbelieve.drawerwithswipetabs;
+package com.androidbelieve.tubesrpl;
 
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.androidbelieve.tubesrpl.adapterView.RecyclerAdapter;
+import com.androidbelieve.tubesrpl.setter_getter.isiMateri;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,12 +32,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.androidbelieve.tubesrpl.Login.USER_TYPE;
+
 /**
  * Created by Ratan on 7/29/2015.
  */
 public class TabMateri extends Fragment {
-
-
+    FloatingActionButton fabs;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
@@ -41,6 +47,30 @@ public class TabMateri extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.tab_materi, container, false);
+
+        fabs = (FloatingActionButton) ll.findViewById(R.id.fab);
+
+        if (USER_TYPE.equals("mahasiswa")) {
+            fabs.setVisibility(View.GONE);
+        } else if (USER_TYPE.equals("dosen")) {
+            fabs.setVisibility(View.VISIBLE);
+        } else{
+            fabs.setVisibility(View.GONE);
+        }
+        fabs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (USER_TYPE.equals("mahasiswa")) {
+                    Snackbar.make(view, "Mahasiswa", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else if (USER_TYPE.equals("dosen")) {
+                    Snackbar.make(view, "Dosen", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                } else {
+                    fabs.setVisibility(View.GONE);
+                }
+            }
+        });
         recyclerView = (RecyclerView) ll.findViewById(R.id.recycler_view);
         doLoad();
         return ll;
@@ -59,13 +89,12 @@ public class TabMateri extends Fragment {
         RecyclerView.Adapter adapter;
         RecyclerView.LayoutManager layoutManager;
         ArrayList<isiMateri> arrayList = new ArrayList<>();
+        String URLdata = "http://pandumalik.esy.es/UserRegistration/materi.php?type=materi";
 
         public BackgroundTask(Activity ctx, RecyclerView rview) {
             this.ctx = ctx;
             this.recyclerView = rview;
         }
-
-        String URLdata = "http://pandumalik.esy.es/UserRegistration/materi.php";
 
         @Override
         protected void onPreExecute() {

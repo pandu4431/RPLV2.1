@@ -1,4 +1,4 @@
-package com.androidbelieve.drawerwithswipetabs;
+package com.androidbelieve.tubesrpl;
 
 import android.app.Activity;
 import android.content.Intent;
