@@ -23,10 +23,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import static com.androidbelieve.tubesrpl.Login.EMAIL_SHARED_PREF;
-import static com.androidbelieve.tubesrpl.Login.ID_USER;
-import static com.androidbelieve.tubesrpl.Login.KEY_PASSWORD;
-import static com.androidbelieve.tubesrpl.Login.SHARED_PREF_NAME;
+import static com.androidbelieve.tubesrpl.newLogin.EMAIL_SHARED_PREF;
+import static com.androidbelieve.tubesrpl.newLogin.ID_USER;
+import static com.androidbelieve.tubesrpl.newLogin.KEY_PASSWORD;
+import static com.androidbelieve.tubesrpl.newLogin.SHARED_PREF_NAME;
 
 /**
  * A simple {@link Fragment} subclass.

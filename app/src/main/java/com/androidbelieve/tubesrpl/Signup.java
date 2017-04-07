@@ -82,7 +82,7 @@ public class Signup extends AppCompatActivity {
                 loading.dismiss();
 
                 Toast.makeText(getApplicationContext(), s, Toast.LENGTH_SHORT).show();
-                Intent myIntent = new Intent(Signup.this, Login.class);
+                Intent myIntent = new Intent(Signup.this, newLogin.class);
                 startActivity(myIntent);
                 finish();
 

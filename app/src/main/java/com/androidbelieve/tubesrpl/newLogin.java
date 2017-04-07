@@ -1,27 +1,19 @@
 package com.androidbelieve.tubesrpl;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.androidbelieve.tubesrpl.setter_getter.UserData;
 
 import org.json.JSONArray;
@@ -35,22 +27,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
-/**
- * Created by pandu on 25/03/17.
- */
-
-public class Login extends AppCompatActivity {
+public class newLogin extends AppCompatActivity {
     public static final String LOGIN_URL = "http://pandumalik.esy.es/UserRegistration/login.php";
-    public static final String KEY_EMAIL = "email";
-    public static final String LOGGEDIN_SHARED_PREF = "loggedin";
-    public static final String LOGIN_SUCCESS = "success";
-    public static String KEY_PASSWORD = "password";
+    public static String LOGIN_PREFERENCE = "LOGIN";
+    public static String SHARED_PREF_DATA = "unck";
+    public static String ID_USER;
     public static String SHARED_PREF_NAME;
     public static String EMAIL_SHARED_PREF;
-    public static String ID_USER;
+    public static String KEY_PASSWORD;
     public static String USER_TYPE = "null";
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -58,21 +43,24 @@ public class Login extends AppCompatActivity {
     private Button BtnLogin;
     private Button BtnClear;
     private boolean loggedIn = false;
+    public static Activity nlg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
         editTextEmail = (EditText) findViewById(R.id.editText_email);
         editTextPassword = (EditText) findViewById(R.id.editText_password);
         BtnLogin = (Button) findViewById(R.id.btn_login);
         BtnClear = (Button) findViewById(R.id.btn_clear);
         signUp = (TextView) findViewById(R.id.signupaccess);
+        nlg = this;
 
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent myIntent = new Intent(Login.this, Signup.class);
+                Intent myIntent = new Intent(newLogin.this, Signup.class);
                 startActivity(myIntent);
             }
         });
@@ -92,80 +80,82 @@ public class Login extends AppCompatActivity {
             }
         });
     }
-
-    private void login() {
-        final String email = editTextEmail.getText().toString();
-        final String password = editTextPassword.getText().toString();
-        final BackgroundTask bt = new BackgroundTask();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, LOGIN_URL,
-                new Response.Listener<String>() {
-
-                    @Override
-                    public void onResponse(String response) {
-                        if (response.trim().equalsIgnoreCase(LOGIN_SUCCESS)) {
-                            SharedPreferences sharedPreferences = Login.this.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putBoolean(LOGGEDIN_SHARED_PREF, true);
-                            editor.putString(EMAIL_SHARED_PREF, email);
-                            bt.execute();
-                            editor.commit();
-                        } else {
-                            Toast.makeText(Login.this, "Invalid username or password", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                    }
-                }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String, String> prams = new HashMap<>();
-                prams.put(KEY_EMAIL, email);
-                prams.put(KEY_PASSWORD, password);
-
-                return prams;
-            }
-        };
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        requestQueue.add(stringRequest);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        loggedIn = sharedPreferences.getBoolean(LOGGEDIN_SHARED_PREF, false);
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREF_DATA, Context.MODE_PRIVATE);
+        loggedIn = sharedPreferences.getBoolean(LOGIN_PREFERENCE, false);
         if (loggedIn) {
-            Intent intent = new Intent(Login.this, MainActivity.class);
+            Intent intent = new Intent(newLogin.this, MainActivity.class);
             startActivity(intent);
         }
     }
 
-    public void onBackPressed() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-        builder.setMessage("Apakah Anda Yakin Ingin Keluar");
-        builder.setCancelable(true);
-        builder.setPositiveButton("IYA", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                System.exit(1);
-            }
-        });
-        builder.setNegativeButton("TIDAK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+
+    private void login() {
+        String username = editTextEmail.getText().toString();
+        String password = editTextPassword.getText().toString();
+        loginUser(username, password);
     }
+
+    private void loginUser(String username, String password) {
+        String urlSuffix = "?username=" + username + "&password=" + password;
+        class logintry extends AsyncTask<String, Void, String> {
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(newLogin.this, "Please Wait", "Login to your Account", true, true);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                BackgroundTask bt = new BackgroundTask();
+                if (s.equalsIgnoreCase("success")) {
+                    bt.execute();
+                    SharedPreferences sharedPreferences = newLogin.this.getSharedPreferences(SHARED_PREF_DATA, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(LOGIN_PREFERENCE, true);
+                    editor.apply();
+                    Toast.makeText(getApplicationContext(), "LOGIN"+s, Toast.LENGTH_SHORT).show();
+                    Intent myIntent = new Intent(newLogin.this, MainActivity.class);
+                    startActivity(myIntent);
+                }else if (s.equalsIgnoreCase("failure")){
+                    Toast.makeText(getApplicationContext(),"Invalid Password or Username", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"Check your Internet", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            protected String doInBackground(String... params) {
+                String s = params[0];
+                BufferedReader bufferReader = null;
+                try {
+                    URL url = new URL(LOGIN_URL + s);
+                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                    bufferReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                    String result;
+                    result = bufferReader.readLine();
+                    return result;
+
+                } catch (Exception e) {
+                    return null;
+                }
+            }
+        }
+        logintry ur = new logintry();
+        ur.execute(urlSuffix);
+    }
+
 
     class BackgroundTask extends AsyncTask<Void, UserData, Void> {
         String username = editTextEmail.getText().toString();
         String URLdata = "http://pandumalik.esy.es/UserRegistration/getUser.php?username=" + username;
+        ProgressDialog loading;
 
         @Override
         protected void onPreExecute() {
@@ -175,8 +165,6 @@ public class Login extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void avoid) {
             super.onPostExecute(avoid);
-            Intent intent = new Intent(Login.this, MainActivity.class);
-            startActivity(intent);
         }
 
         @Override
@@ -208,11 +196,8 @@ public class Login extends AppCompatActivity {
                     SHARED_PREF_NAME = JO.getString("name");
                     KEY_PASSWORD = JO.getString("password");
                     USER_TYPE = JO.getString("type");
+
                 }
-                finish();
-                Log.d("JSON STRING", json_string);
-
-
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -223,4 +208,5 @@ public class Login extends AppCompatActivity {
             return null;
         }
     }
+
 }

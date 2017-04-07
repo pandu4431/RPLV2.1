@@ -2,6 +2,7 @@ package com.androidbelieve.tubesrpl;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.androidbelieve.tubesrpl.Upload_Download.Uploader;
 import com.androidbelieve.tubesrpl.adapterView.RecyclerAdapter;
 import com.androidbelieve.tubesrpl.setter_getter.isiMateri;
 
@@ -32,16 +34,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static com.androidbelieve.tubesrpl.Login.USER_TYPE;
+import static com.androidbelieve.tubesrpl.newLogin.USER_TYPE;
 
 /**
  * Created by Ratan on 7/29/2015.
  */
 public class TabMateri extends Fragment {
+    public static String ID_MATERI;
     FloatingActionButton fabs;
     RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
+    //RecyclerView.LayoutManager layoutManager;
+    //RecyclerView.Adapter adapter;
 
     @Nullable
     @Override
@@ -54,18 +57,18 @@ public class TabMateri extends Fragment {
             fabs.setVisibility(View.GONE);
         } else if (USER_TYPE.equals("dosen")) {
             fabs.setVisibility(View.VISIBLE);
-        } else{
+        } else {
             fabs.setVisibility(View.GONE);
         }
         fabs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (USER_TYPE.equals("mahasiswa")) {
-                    Snackbar.make(view, "Mahasiswa", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar.make(view, "Mahasiswa", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                 } else if (USER_TYPE.equals("dosen")) {
-                    Snackbar.make(view, "Dosen", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    Snackbar.make(view, "Dosen", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent upload = new Intent(getActivity(), Uploader.class);
+                    startActivity(upload);
                 } else {
                     fabs.setVisibility(View.GONE);
                 }
@@ -142,6 +145,7 @@ public class TabMateri extends Fragment {
                     count++;
                     isiMateri isiMateris = new isiMateri(JO.getString("title"), JO.getString("description"));
                     publishProgress(isiMateris);
+                    ID_MATERI = JO.getString("idmateri");
                 }
                 Log.d("JSON STRING", json_string);
 

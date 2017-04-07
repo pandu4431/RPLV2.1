@@ -2,31 +2,31 @@ package com.androidbelieve.tubesrpl;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.androidbelieve.tubesrpl.navigationbar.account;
 
-import static com.androidbelieve.tubesrpl.Login.SHARED_PREF_NAME;
+import static com.androidbelieve.tubesrpl.newLogin.SHARED_PREF_DATA;
+import static com.androidbelieve.tubesrpl.newLogin.nlg;
 
 public class MainActivity extends AppCompatActivity {
-    private Toolbar toolbar;
     public static Activity fa;
     DrawerLayout mDrawerLayout;
     NavigationView mNavigationView;
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
-
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (menuItem.getItemId() == R.id.logout) {
                     logout();
-                    startActivity(new Intent(MainActivity.this, Login.class));
                 }
 
                 return false;
@@ -84,14 +83,14 @@ public class MainActivity extends AppCompatActivity {
          * Setup Drawer Toggle of the Toolbar
          */
 
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,R.string.app_name);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name, R.string.app_name);
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
     }
 
     public boolean logout() {
-        SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = MainActivity.this.getSharedPreferences(SHARED_PREF_DATA, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
@@ -99,8 +98,26 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setMessage("Apakah Anda Yakin Ingin Keluar");
+        builder.setCancelable(true);
+        builder.setPositiveButton("IYA", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                nlg.finish();
+                finish();
+
+            }
+        });
+        builder.setNegativeButton("TIDAK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                dialog.cancel();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
+
 }
