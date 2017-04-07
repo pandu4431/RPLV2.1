@@ -24,11 +24,11 @@ import java.util.UUID;
 
 public class Uploader extends AppCompatActivity {
 
-    public static final String PDF_UPLOAD_HTTP_URL = "http://pandumalik.esy.es/UserRegistration/uploader.php";
+    public static final String PDF_UPLOAD_HTTP_URL = "http://pandumalik.esy.es/UserRegistration/uploadernew.php";
     public int PDF_REQ_CODE = 1;
-    String PdfNameHolder, PdfPathHolder, PdfID;
+    String PdfNameHolder, PdfPathHolder, PdfID, PdfDescHolder;
     private Button SelectButton, UploadButton;
-    private EditText PdfNameEditText, uploaderpath;
+    private EditText PdfNameEditText, uploaderpath,uploaderDesc;
     private Uri uri;
 
     @Override
@@ -41,6 +41,7 @@ public class Uploader extends AppCompatActivity {
         UploadButton = (Button) findViewById(R.id.buttonUpload);
         PdfNameEditText = (EditText) findViewById(R.id.uploadEditTitle);
         uploaderpath = (EditText) findViewById(R.id.uploaderPath);
+        uploaderDesc = (EditText) findViewById(R.id.uploadEditDescription);
 
         SelectButton.setOnClickListener(new View.OnClickListener() {
             @TargetApi(Build.VERSION_CODES.KITKAT)
@@ -78,6 +79,7 @@ public class Uploader extends AppCompatActivity {
     public void PdfUploadFunction() {
 
         PdfNameHolder = PdfNameEditText.getText().toString().trim();
+        PdfDescHolder = uploaderDesc.getText().toString().trim();
         PdfPathHolder = FilePath.getPath(this, uri);
         if (PdfPathHolder == null) {
             Toast.makeText(this, "Please move your PDF file to internal storage & try again.", Toast.LENGTH_LONG).show();
@@ -85,11 +87,9 @@ public class Uploader extends AppCompatActivity {
             uploaderpath.setText(PdfPathHolder);
             try {
                 PdfID = UUID.randomUUID().toString();
-                new MultipartUploadRequest(this, PdfID, PDF_UPLOAD_HTTP_URL)
-                        .addFileToUpload(PdfPathHolder, "pdf")
-                        .addParameter("name", PdfNameHolder)
+                new MultipartUploadRequest(this, PdfID, PDF_UPLOAD_HTTP_URL).addFileToUpload(PdfPathHolder, "pdf").addParameter("name", PdfNameHolder).addParameter("description", PdfDescHolder)
                         .setNotificationConfig(new UploadNotificationConfig())
-                        .setMaxRetries(5)
+                        .setMaxRetries(2)
                         .startUpload();
 
             } catch (Exception exception) {
@@ -100,7 +100,6 @@ public class Uploader extends AppCompatActivity {
 
 
     public void AllowRunTimePermission() {
-
         if (ActivityCompat.shouldShowRequestPermissionRationale(Uploader.this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Toast.makeText(Uploader.this, "READ_EXTERNAL_STORAGE permission Access Dialog", Toast.LENGTH_LONG).show();
         } else {

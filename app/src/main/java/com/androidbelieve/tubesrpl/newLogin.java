@@ -121,7 +121,7 @@ public class newLogin extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean(LOGIN_PREFERENCE, true);
                     editor.apply();
-                    Toast.makeText(getApplicationContext(), "LOGIN"+s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "LOGIN "+s, Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(newLogin.this, MainActivity.class);
                     startActivity(myIntent);
                 }else if (s.equalsIgnoreCase("failure")){
