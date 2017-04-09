@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.androidbelieve.tubesrpl.navigationbar.Favorite;
 import com.androidbelieve.tubesrpl.navigationbar.account;
 
 import static com.androidbelieve.tubesrpl.newLogin.SHARED_PREF_DATA;
@@ -68,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
                 if (menuItem.getItemId() == R.id.account) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView, new account()).commit();
+                }
+
+                if (menuItem.getItemId() == R.id.favorite) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView, new Favorite()).commit();
                 }
 
                 if (menuItem.getItemId() == R.id.logout) {

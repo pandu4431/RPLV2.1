@@ -7,10 +7,20 @@ package com.androidbelieve.tubesrpl.setter_getter;
 public class isiMateri {
     private String title;
     private String description;
+    private String idmateri;
 
-    public isiMateri(String description, String title) {
+    public isiMateri(String title, String description, String idmateri) {
         this.description = description;
         this.title = title;
+        this.idmateri=idmateri;
+    }
+
+    public String getIdmateri() {
+        return idmateri;
+    }
+
+    public void setIdmateri(String idmateri) {
+        this.idmateri = idmateri;
     }
 
     public String getTitle() {

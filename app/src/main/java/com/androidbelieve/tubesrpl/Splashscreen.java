@@ -52,8 +52,7 @@ public class Splashscreen extends Activity {
                         sleep(50);
                         waited += 50;
                     }
-                    Intent intent = new Intent(Splashscreen.this,
-                            newLogin.class);
+                    Intent intent = new Intent(Splashscreen.this,newLogin.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     startActivity(intent);
                     Splashscreen.this.finish();

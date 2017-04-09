@@ -1,13 +1,9 @@
-package com.androidbelieve.tubesrpl;
+package com.androidbelieve.tubesrpl.navigationbar;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,9 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.androidbelieve.tubesrpl.Upload_Download.Uploader;
-import com.androidbelieve.tubesrpl.adapterView.RecyclerAdapter;
-import com.androidbelieve.tubesrpl.setter_getter.isiMateri;
+import com.androidbelieve.tubesrpl.R;
+import com.androidbelieve.tubesrpl.adapterView.RecyclerFavorite;
+import com.androidbelieve.tubesrpl.setter_getter.isiFavorite;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,65 +30,31 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static com.androidbelieve.tubesrpl.newLogin.USER_TYPE;
+import static com.androidbelieve.tubesrpl.newLogin.ID_USER;
 
-/**
- * Created by Ratan on 7/29/2015.
- */
-public class TabMateri extends Fragment {
-    public static String ID_MATERI;
-    public static String MATERI_NAME;
-    FloatingActionButton fabs;
+public class Favorite extends Fragment {
     RecyclerView recyclerView;
 
-    //RecyclerView.LayoutManager layoutManager;
-    //RecyclerView.Adapter adapter;
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.tab_materi, container, false);
-
-        fabs = (FloatingActionButton) ll.findViewById(R.id.fab);
-
-        if (USER_TYPE.equals("mahasiswa")) {
-            fabs.setVisibility(View.GONE);
-        } else if (USER_TYPE.equals("dosen")) {
-            fabs.setVisibility(View.VISIBLE);
-        } else {
-            fabs.setVisibility(View.GONE);
-        }
-        fabs.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (USER_TYPE.equals("mahasiswa")) {
-                    Snackbar.make(view, "Mahasiswa", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                } else if (USER_TYPE.equals("dosen")) {
-                    Snackbar.make(view, "Dosen", Snackbar.LENGTH_LONG).setAction("Action", null).show();
-                    Intent upload = new Intent(getActivity(), Uploader.class);
-                    startActivity(upload);
-                } else {
-                    fabs.setVisibility(View.GONE);
-                }
-            }
-        });
-        recyclerView = (RecyclerView) ll.findViewById(R.id.recycler_view);
+        LinearLayout ll = (LinearLayout) inflater.inflate(R.layout.fragment_favorite, container, false);
+        recyclerView = (RecyclerView) ll.findViewById(R.id.favorite_recycler);
         doLoad();
         return ll;
     }
-
 
     public void doLoad() {
         new BackgroundTask(getActivity(), recyclerView).execute();
     }
 
-    class BackgroundTask extends AsyncTask<Void, isiMateri, Void> {
+    class BackgroundTask extends AsyncTask<Void, isiFavorite, Void> {
 
         Context ctx;
         RecyclerView recyclerView;
         RecyclerView.Adapter adapter;
         RecyclerView.LayoutManager layoutManager;
-        ArrayList<isiMateri> arrayList = new ArrayList<>();
-        String URLdata = "http://pandumalik.esy.es/UserRegistration/materi.php?type=materi";
+        ArrayList<isiFavorite> arrayList = new ArrayList<>();
+        String URLdata = "http://pandumalik.esy.es/UserRegistration/getFavorite.php?iduser="+ID_USER;
 
         public BackgroundTask(Activity ctx, RecyclerView rview) {
             this.ctx = ctx;
@@ -101,16 +63,16 @@ public class TabMateri extends Fragment {
 
         @Override
         protected void onPreExecute() {
-            recyclerView = (RecyclerView) recyclerView.findViewById(R.id.recycler_view);
+            recyclerView = (RecyclerView) recyclerView.findViewById(R.id.favorite_recycler);
             layoutManager = new LinearLayoutManager(ctx);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setHasFixedSize(true);
-            adapter = new RecyclerAdapter(arrayList);
+            adapter = new RecyclerFavorite(arrayList);
             recyclerView.setAdapter(adapter);
         }
 
         @Override
-        protected void onProgressUpdate(isiMateri... values) {
+        protected void onProgressUpdate(isiFavorite... values) {
             arrayList.add(values[0]);
             adapter.notifyDataSetChanged();
         }
@@ -142,10 +104,8 @@ public class TabMateri extends Fragment {
                 while (count < jsonArray.length()) {
                     JSONObject JO = jsonArray.getJSONObject(count);
                     count++;
-                    isiMateri isiMateris = new isiMateri(JO.getString("title"), JO.getString("description"), JO.getString("idmateri"));
-                    publishProgress(isiMateris);
-                    ID_MATERI = JO.getString("idmateri");
-                    MATERI_NAME= JO.getString("title");
+                    isiFavorite fav = new isiFavorite(JO.getString("namaMateri"), JO.getString("date"), JO.getString("idMateri"));
+                    publishProgress(fav);
                 }
                 Log.d("JSON STRING", json_string);
 
@@ -159,4 +119,6 @@ public class TabMateri extends Fragment {
             return null;
         }
     }
+
+
 }

@@ -37,13 +37,13 @@ public class newLogin extends AppCompatActivity {
     public static String EMAIL_SHARED_PREF;
     public static String KEY_PASSWORD;
     public static String USER_TYPE = "null";
+    public static Activity nlg;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private TextView signUp;
     private Button BtnLogin;
     private Button BtnClear;
     private boolean loggedIn = false;
-    public static Activity nlg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +80,7 @@ public class newLogin extends AppCompatActivity {
             }
         });
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -90,7 +91,6 @@ public class newLogin extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
 
     private void login() {
         String username = editTextEmail.getText().toString();
@@ -121,13 +121,13 @@ public class newLogin extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean(LOGIN_PREFERENCE, true);
                     editor.apply();
-                    Toast.makeText(getApplicationContext(), "LOGIN "+s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "LOGIN " + s, Toast.LENGTH_SHORT).show();
                     Intent myIntent = new Intent(newLogin.this, MainActivity.class);
                     startActivity(myIntent);
-                }else if (s.equalsIgnoreCase("failure")){
-                    Toast.makeText(getApplicationContext(),"Invalid Password or Username", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(getApplicationContext(),"Check your Internet", Toast.LENGTH_SHORT).show();
+                } else if (s.equalsIgnoreCase("failure")) {
+                    Toast.makeText(getApplicationContext(), "Invalid Password or Username", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Check your Internet", Toast.LENGTH_SHORT).show();
                 }
             }
 
